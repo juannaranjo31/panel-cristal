@@ -1,0 +1,29 @@
+.students{
+    padding: 0;
+    max-height: 90vh;
+    overflow-y: scroll;
+    background-color: #d50d6e;
+    border-radius: 5px;
+
+    &-head{
+        height: 2rem;
+        color: #ffff;
+    }
+
+    &-row{
+        height: 1rem;
+        background-color: #ffff;
+        border: solid 1px #0000;
+
+        &:hover{
+            background-color: rgb(224, 122, 183);
+            color: #ffff;
+        }
+    }
+
+    &-data{
+        text-align: center;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
