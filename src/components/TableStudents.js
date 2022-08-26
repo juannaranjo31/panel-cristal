@@ -6,7 +6,8 @@ import { StudentsGrid } from './StudentsGrid';
 export const TableStudents = () => {
     const [loading, setLoading] = useState(true);
     const [students, setStudents] = useState([]);
-    // const [filters, setFilters] = useState(false);
+    const [aux, setAux] = useState([]);
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
         getInformation();
@@ -22,9 +23,6 @@ export const TableStudents = () => {
     return (
         <>
             <div className="courses">
-                {/* <button className="filters-button" onClick={() => setFilters(true)}>Filtros</button> */}
-
-
                 <Courses
                     diseño={students.filter(e => e.curso === 'Diseño de una nueva realidad').length}
                     business={students.filter(e => e.curso === 'Building your future business').length}
@@ -32,25 +30,63 @@ export const TableStudents = () => {
                 />
             </div>
 
-            <table className='students'>
-                <thead>
-                    <tr className='students-head'>
-                        <th className="students-head-title">Nombre completo</th>
-                        <th className="students-head-title">Documento</th>
-                        <th className="students-head-title">Edad</th>
-                        <th className="students-head-title">Colegio</th>
-                        <th className="students-head-title">Grado</th>
-                        <th className="students-head-title">Municipio</th>
-                        <th className="students-head-title">Curso</th>
-                        <th className="students-head-title">E-mail</th>
-                    </tr>
-                </thead>
+            <div className="students-container">
+                <div className="filters">
+                    <div className="filters-control">
+                        <label htmlFor="curso" className="filters-label">Curso: </label>
+                        <select name="curso" id="curso" className="filters-select"
+                            onChange={(e) => {
 
-                <tbody>
-                    {loading === true ? console.log('Cargando') : <StudentsGrid students={students} />}
-                </tbody>
+                                if (e.target.value === '-- Filtrar por curso --') {
+                                    setStudents(aux);
+                                    console.log('default');
+                                } else {
+                                    let newArr = [];
+                                    if (count != 0) {
+                                        newArr = aux.filter((s) => {
+                                            return s.curso === e.target.value;
+                                        });
+                                    } else {
+                                        setAux(students);
+                                        newArr = students.filter((s) => {
+                                            return s.curso === e.target.value;
+                                        });
 
-            </table>
+                                    }
+
+                                    setStudents(newArr);
+                                }
+
+                                setCount(count + 1);
+                            }}>
+                            <option value="0"> -- Filtrar por curso -- </option>
+                            <option value="Diseño de una nueva realidad">Diseño de una nueva realidad</option>
+                            <option value="Building your future business">Building your future business</option>
+                            <option value="Programando el futuro">Programando el futuro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <table className='students'>
+                    <thead>
+                        <tr className='students-head'>
+                            <th className="students-head-title">Nombre completo</th>
+                            <th className="students-head-title">Documento</th>
+                            <th className="students-head-title">Edad</th>
+                            <th className="students-head-title">Colegio</th>
+                            <th className="students-head-title">Grado</th>
+                            <th className="students-head-title">Municipio</th>
+                            <th className="students-head-title">Curso</th>
+                            <th className="students-head-title">E-mail</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+                        {loading === true ? console.log('Cargando') : <StudentsGrid students={students} />}
+                    </tbody>
+                </table>
+            </div>
 
             {/* {
                 filters &&
