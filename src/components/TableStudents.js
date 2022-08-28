@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDownloadExcel } from 'react-export-table-to-excel';
 import { getItems } from '../application/api';
 import { Courses } from './Courses';
 import { StudentsGrid } from './StudentsGrid';
@@ -8,6 +9,15 @@ export const TableStudents = () => {
     const [students, setStudents] = useState([]);
     const [aux, setAux] = useState([]);
     const [count, setCount] = useState(0);
+    const tableRef = useRef(null);
+
+    const { onDownload } = useDownloadExcel(
+        {
+            currentTableRef: tableRef.current,
+            filename: 'Listado-estudiantes-cristal table',
+            sheet: 'Estudiantes'
+        }
+    );
 
     useEffect(() => {
         getInformation();
@@ -65,9 +75,13 @@ export const TableStudents = () => {
                             <option value="Programando el futuro">Programando el futuro</option>
                         </select>
                     </div>
+
+                    <div className="filters-control">
+                        <button className="filters-excel" onClick={onDownload}>Exportar a excel</button>
+                    </div>
                 </div>
 
-                <table className='students'>
+                <table className='students' ref={tableRef}>
                     <thead>
                         <tr className='students-head'>
                             <th className="students-head-title">Nombre completo</th>
